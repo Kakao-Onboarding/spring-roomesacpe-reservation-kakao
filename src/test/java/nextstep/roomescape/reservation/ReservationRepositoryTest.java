@@ -49,14 +49,14 @@ class ReservationRepositoryTest {
     @Test
     void findByDateTimeTest() {
         reservationRepository.create(createRequest(LocalDate.parse("9999-03-03")));
-        Boolean result = reservationRepository.findByDateTime(LocalDate.parse("9999-03-03"), LocalTime.parse("13:00"));
+        Boolean result = reservationRepository.existsByDateTime(LocalDate.parse("9999-03-03"), LocalTime.parse("13:00"));
         assertEquals(result, true);
     }
 
     @DisplayName("없는 예약 날짜/시간 조회")
     @Test
     void findByDateTimeEmptyTest() {
-        Boolean result = reservationRepository.findByDateTime(LocalDate.parse("9966-08-14"), LocalTime.parse("13:00"));
+        Boolean result = reservationRepository.existsByDateTime(LocalDate.parse("9966-08-14"), LocalTime.parse("13:00"));
         assertEquals(result, false);
     }
 

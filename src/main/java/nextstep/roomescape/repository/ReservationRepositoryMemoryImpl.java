@@ -18,12 +18,12 @@ public class ReservationRepositoryMemoryImpl implements ReservationRepository {
 
     @Override
     public Long create(Reservation reservation) {
-        if (findByDateTime(reservation.getDate(), reservation.getTime())) {
+        if (existsByDateTime(reservation.getDate(), reservation.getTime())) {
             throw new DuplicateEntityException("예약 생성 시 날짜와 시간이 똑같은 예약이 이미 있습니다.");
         }
         Long id = reservationCount.getAndIncrement();
-        Reservation creatteReservation = new Reservation(id, reservation.getDate(), reservation.getTime(), reservation.getName(), reservation.getTheme());
-        reservationList.put(id, creatteReservation);
+        Reservation createReservation = new Reservation(id, reservation.getDate(), reservation.getTime(), reservation.getName(), reservation.getTheme());
+        reservationList.put(id, createReservation);
         return id;
     }
 
@@ -33,7 +33,7 @@ public class ReservationRepositoryMemoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Boolean findByDateTime(LocalDate date, LocalTime time) {
+    public Boolean existsByDateTime(LocalDate date, LocalTime time) {
         return reservationList
                 .values()
                 .stream()

@@ -46,7 +46,7 @@ public class ReservationRepositoryJdbcImpl implements ReservationRepository {
     @Override
     public Long create(Reservation reservation) {
         Theme theme = reservation.getTheme();
-        if (findByDateTime(reservation.getDate(), reservation.getTime())) {
+        if (existsByDateTime(reservation.getDate(), reservation.getTime())) {
             throw new DuplicateEntityException("예약 생성 시 날짜와 시간이 똑같은 예약이 이미 있습니다.");
         }
         String sql = "insert into reservation (date, time, name, theme_id) values(?,?,?,?)";
@@ -78,7 +78,7 @@ public class ReservationRepositoryJdbcImpl implements ReservationRepository {
     }
 
     @Override
-    public Boolean findByDateTime(LocalDate date, LocalTime time) {
+    public Boolean existsByDateTime(LocalDate date, LocalTime time) {
         String sql = "select exists (select * from reservation where date= ? and time = ?)";
         try {
             return jdbcTemplate.queryForObject(sql, Boolean.class, date, time);
